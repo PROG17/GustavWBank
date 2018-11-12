@@ -13,22 +13,38 @@ namespace BankWebApp.Controllers
 
         public BankController()
         {
-            _repository = new BankRepository();
+            _repository = BankRepository.Instance();
         }
 
         public IActionResult ListOfAccounts()
         {
             var listOfAccounts = _repository.GetAllCustomersAndAccounts();
             //TEST
-            _repository.Transfer(1,2,3000);
+            _repository.Transfer(1, 2, 3000);
             return View(listOfAccounts);
         }
 
-        public IActionResult DepositWithdraw()
+        public IActionResult DepositWithdraw(string message)
         {
+            ViewBag.message = message;
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Deposit(int accountNumber, decimal sum)
+        {
+            var result =_repository.Deposit(accountNumber, sum);
+            return RedirectToAction("DepositWithdraw", new {message = result});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Withdraw(int accountNumber, decimal sum)
+        {
+            var result = _repository.Withdraw(accountNumber, sum);
+            return RedirectToAction("DepositWithdraw", new {message = result});
+        }
 
     }
 }
