@@ -21,5 +21,12 @@ namespace BankWebApp.Controllers
             var listOfAccounts = _repository.GetAllCustomersAndAccounts();
             return View(listOfAccounts);
         }
+
+        public IActionResult DepositWithdraw()
+        {
+            return View();
+        }
+
+
     }
 }
