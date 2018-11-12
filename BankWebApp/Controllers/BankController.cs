@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BankWebApp.DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace BankWebApp.Controllers
 {
@@ -34,6 +35,8 @@ namespace BankWebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Deposit(int accountNumber, decimal sum)
         {
+            if(sum == 0 || accountNumber == 0)
+                return RedirectToAction("DepositWithdraw", new { message = "Summa eller konto är i fel format eller 0" });
             var result =_repository.Deposit(accountNumber, sum);
             return RedirectToAction("DepositWithdraw", new {message = result});
         }
@@ -42,6 +45,8 @@ namespace BankWebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Withdraw(int accountNumber, decimal sum)
         {
+            if (sum == 0 || accountNumber == 0)
+                return RedirectToAction("DepositWithdraw", new { message = "Summa eller konto är i fel format eller 0" });
             var result = _repository.Withdraw(accountNumber, sum);
             return RedirectToAction("DepositWithdraw", new {message = result});
         }
