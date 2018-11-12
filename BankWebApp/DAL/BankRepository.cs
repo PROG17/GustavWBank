@@ -8,7 +8,7 @@ namespace BankWebApp.DAL
 {
     public class BankRepository
     {
-        private List<Customer> _customersWithAccounts;
+        public List<Customer> _customersWithAccounts;
         private static BankRepository _instance;
 
         private BankRepository()
