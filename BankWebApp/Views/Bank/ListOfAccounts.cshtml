@@ -1,0 +1,23 @@
+﻿@model List<Customer>
+@{
+    ViewData["Title"] = "ListOfAccounts";
+}
+
+<h2>ListOfAccounts</h2>
+
+@foreach (var customer in Model)
+{
+    <h3>Kundnummer: @customer.CustomerNumber</h3>
+    <h3>Namn: @customer.Name</h3>
+    <h3>Konton:</h3>
+    if (customer.Accounts.Count > 0)
+    {
+        foreach (var account in customer.Accounts)
+        {
+            <h4>Kontonummer: @account.AccountNumber</h4>
+            <h4>Saldo: @account.Balance</h4>
+        }
+
+    }
+}
+
