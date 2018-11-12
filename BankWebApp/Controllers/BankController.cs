@@ -19,6 +19,8 @@ namespace BankWebApp.Controllers
         public IActionResult ListOfAccounts()
         {
             var listOfAccounts = _repository.GetAllCustomersAndAccounts();
+            //TEST
+            _repository.Transfer(1,2,3000);
             return View(listOfAccounts);
         }
 

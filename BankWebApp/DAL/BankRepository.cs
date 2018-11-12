@@ -8,9 +8,37 @@ namespace BankWebApp.DAL
 {
     public class BankRepository
     {
+        private List<Customer> _customersWithAccounts;
+
+        public BankRepository()
+        {
+            _customersWithAccounts = CreateFakeCustomersAndAccounts();
+        }
         public List<Customer> GetAllCustomersAndAccounts()
         {
-            return CreateFakeCustomersAndAccounts();
+            return _customersWithAccounts;
+        }
+
+        public string Transfer(int withdraw_account, int deposit_account, decimal amount)
+        {
+            
+            var withdrawAccount = _customersWithAccounts.SelectMany(sublist => sublist.Accounts)
+                .SingleOrDefault(account => account.AccountNumber == withdraw_account);
+            var depositAccount = _customersWithAccounts.SelectMany(sublist => sublist.Accounts)
+                .SingleOrDefault(account => account.AccountNumber == deposit_account);
+            if (withdrawAccount == null)
+                return "Kontot du vill göra uttag från finns inte";
+            
+            if (depositAccount == null)
+                return "Kontot du vill göra insättning till finns inte";
+
+            if (amount > withdrawAccount.Balance)
+                return "Kontot du vill överföra från har inte nog med pengar på kontot för att utföra överföringen";
+           
+            withdrawAccount.Balance -= amount;
+            depositAccount.Balance += amount;
+
+            return "Lyckades med överföringen";
         }
 
         private List<Customer> CreateFakeCustomersAndAccounts()
