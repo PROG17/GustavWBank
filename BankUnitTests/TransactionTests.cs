@@ -75,5 +75,19 @@ namespace BankUnitTests
             Assert.AreEqual(_bankRepo._customersWithAccounts.SingleOrDefault(x => x.CustomerNumber == 0).Accounts.SingleOrDefault(c => c.AccountNumber == 0).Balance, 150);
             _bankRepo._customersWithAccounts.Remove(newCustomer);
         }
+        [TestMethod]
+        public void VerifyAmount()
+        {
+            var bankRepo = BankRepository.Instance();
+
+            int sum = 1;
+            var accounts = bankRepo.GetAllCustomersAndAccounts();
+            var expectedBalanceFrom = accounts[0].Accounts[0].Balance - sum;
+            var expecedBalanceTo = accounts[1].Accounts[0].Balance + sum;
+
+            bankRepo.Transfer(accounts[0].Accounts[0].AccountNumber, accounts[1].Accounts[0].AccountNumber, sum);
+            Assert.AreEqual(expectedBalanceFrom, accounts[0].Accounts[0].Balance);
+            Assert.AreEqual(expecedBalanceTo, accounts[1].Accounts[0].Balance);
+        }
     }
 }
